@@ -10,6 +10,7 @@ COLOR_PATH    = (255, 255, 255)
 COLOR_EMPTY   = (255, 255, 255)
 COLOR_CLOSE   = (255, 255, 255)
 COLOR_OPEN    = (255, 255, 255)
+COLOR_LINE    = (255, 255, 255)
 
 WIN = pygame.display.set_mode(WIDTH, HEIGHT)
 pygame.display.set_caption("Maze Runne")
@@ -83,3 +84,33 @@ def h(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
     return abs(x1 - x2) + abs(y1 - y2)
+
+
+def make_grid(rows, cols, width, height):
+    grid =[]
+    gap = min(width, height )// rows
+    for x in range(rows):
+        grid.append([])
+        for y in range(cols):
+            spot = Spot(x, y, gap, gap, rows)
+            grid[x].append(spot)
+
+    return grid
+
+
+def draw_grid(win, rows, cols, width, height):
+    gap = width // rows
+    for x in range(rows):
+        pygame.draw.line(win, COLOR_LINE, (0, x * gap), (width, x * gap))
+        for y in range(cols):
+            pygame.draw.line(win, COLOR_LINE, (0, y * gap), (height, y * gap))
+
+def draw(win, grid, rows, cols, width, height):
+    win.fill(COLOR_EMPTY)
+
+    for row in grid:
+        for spot in row:
+            spot.draw(win)
+
+    draw_grid(win, rows, cols, width, height)
+    pygame.display.update()
